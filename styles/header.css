@@ -1,0 +1,34 @@
+.cabecalho {
+    display: flex;
+    max-width: 100vw;
+    margin-top: 1em;
+    padding: 1em;
+}
+
+.cabecalho-nav {
+    width: 100vw;
+    margin-left: 0.5em;
+}
+
+.cabecalho-nav__lista {
+    display: flex;
+    text-align: center;
+}
+
+.cabecalho-nav__item {
+    margin-left: 0.5em;
+    
+}
+
+.cabecalho-nav__link {
+    text-decoration: none;
+    color: var(--pastel);
+    padding: 0 0.5em;
+}
+
+.cabecalho-nav__link:hover {
+    color: var(--verde);
+    border-bottom: 1px solid var(--verde);
+    border-radius: 10px;
+    
+}
