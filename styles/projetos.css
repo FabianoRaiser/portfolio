@@ -1,11 +1,11 @@
 .card-projeto {
-    width: 60vw;
+    width: 40vw;
     margin-top: 1em;
     padding: 0.5em;
 }
 
 .card-projeto__img {
-    width: 60vw;
+    width: 40vw;
     border-radius: 10px;
 }
 
