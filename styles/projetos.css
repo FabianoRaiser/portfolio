@@ -1,12 +1,25 @@
 .card-projeto {
-    width: 40vw;
+    width: 70vw;
     margin-top: 1em;
     padding: 0.5em;
 }
 
 .card-projeto__img {
-    width: 40vw;
+    width: 70vw;
     border-radius: 10px;
+}
+
+@media screen and (min-width: 640px) {
+    .card-projeto {
+        width: 50vw;
+        margin-top: 1em;
+        padding: 0.5em;
+    }
+    
+    .card-projeto__img {
+        width: 50vw;
+        border-radius: 10px;
+    }
 }
 
 .card-projeto__link {

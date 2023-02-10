@@ -11,41 +11,53 @@
 </head>
 
 <body>
-    <header class="cabecalho container"><nav class="cabecalho-nav"><ul class="cabecalho-nav__lista">
-        <ln class="cabecalho-nav__item"><a href="#" class="cabecalho-nav__link">Inicio</a></ln>
-        <ln class="cabecalho-nav__item"><a href="#" class="cabecalho-nav__link">Projetos</a></ln>
-        <ln class="cabecalho-nav__item"><a href="#" class="cabecalho-nav__link">Contato</a></ln>
-        <ln class="cabecalho-nav__item"><a href="#" class="cabecalho-nav__link">Sobre</a></ln>
-    </ul></nav></header>
+    <header class="cabecalho container">
+        <nav class="cabecalho-nav">
+            <ul class="cabecalho-nav__lista">
+                <ln class="cabecalho-nav__item"><a href="#" class="cabecalho-nav__link">Inicio</a></ln>
+                <ln class="cabecalho-nav__item"><a href="#" class="cabecalho-nav__link">Projetos</a></ln>
+                <ln class="cabecalho-nav__item"><a href="#" class="cabecalho-nav__link">Contato</a></ln>
+                <ln class="cabecalho-nav__item"><a href="#" class="cabecalho-nav__link">Sobre</a></ln>
+            </ul>
+        </nav>
+    </header>
     <section class="pagina-grid">
-    <section class="side-bar-left">
-        <section class="container perfil"><img src="https://github.com/FabianoRaiser.png" alt="Imagem de perfil" class="perfil-img">
-        <p class="perfil-nome">Fabiano Raiser</p>
-        <p class="perfil-subtitulo">Desenvolvedor Front-end</p>
+        <section class="sidebar-left">
+            <section class="container perfil"><img src="https://github.com/FabianoRaiser.png" alt="Imagem de perfil"
+                    class="perfil__img">
+                <div class="perfil__descricao">
+                    <p class="perfil__nome">Fabiano Raiser</p>
+                    <p class="perfil__subtitulo">Desenvolvedor Front-end JR.</p>
+                    <p class="perfil__texto">Sou aluno da Alura desde Agosto de 2022. </p>
+                    <p class="perfil__texto">Estou em transição de carreira. Tenho mais de 2 anos de esperiencia na área de Logística. Meu foco atual está em dominar o JavaScript e aprender React.</p>
+                </div>
+            </section>
         </section>
+        <main class="principal">
+            <section class="container card-projeto">
+                <p class="titulo">Projetos</p>
+            </section>
+            <section>
+                <div class="container card-projeto">
+                    <a href="https://jogo-numero-secreto-ecru.vercel.app" class="card-projeto__link">
+                        <img src="./img/tela-inicial__numeroSecreto.png" alt="Página do Número Secreto"
+                            class="card-projeto__img">
+                        <p class="card-projeto__titulo">Número Secreto</p>
+                        <p class="card-projeto__descricao">Tecnologias utilizadas: HTML | CSS | JavaScript | API
+                            Recognition (Reconhecimento de voz para comandos)</p>
+                    </a>
+                </div>
+                <div class="container card-projeto">
+                    <a href="https://imersao-dev6-fabianoraiser.vercel.app" class="card-projeto__link">
+                        <img src="./img/tela-inicial__imersaoDev6.png" alt="Página do Número Secreto"
+                            class="card-projeto__img">
+                        <p class="card-projeto__titulo">Imersão Alura</p>
+                        <p class="card-projeto__descricao">Tecnologias utilizadas: HTML | CSS | JavaScript</p>
+                    </a>
+                </div>
+            </section>
+        </main>
     </section>
-    <main class="principal">
-        <section class="container card-projeto container-titulo">
-            <p class="titulo">Projetos</p>
-        </section>
-        <section>
-            <div class="container card-projeto">
-            <a href="https://jogo-numero-secreto-ecru.vercel.app" class="card-projeto__link">
-            <img src="./img/tela-inicial__numeroSecreto.png" alt="Página do Número Secreto" class="card-projeto__img">
-            <p class="card-projeto__titulo">Número Secreto</p>
-            <p class="card-projeto__descricao">Tecnologias utilizadas: HTML | CSS | JavaScript | API Recognition (Reconhecimento de voz para comandos)</p>
-            </a>
-        </div>
-            <div class="container card-projeto">
-            <a href="https://imersao-dev6-fabianoraiser.vercel.app" class="card-projeto__link">
-            <img src="./img/tela-inicial__imersaoDev6.png" alt="Página do Número Secreto" class="card-projeto__img">
-            <p class="card-projeto__titulo">Imersão Alura</p>
-            <p class="card-projeto__descricao">Tecnologias utilizadas: HTML | CSS | JavaScript</p>
-            </a>
-        </div>
-        </section>
-    </main>
-</section>
     <footer class="rodape"></footer>
 
 

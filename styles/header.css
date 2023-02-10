@@ -1,12 +1,11 @@
 .cabecalho {
     display: flex;
-    max-width: 100vw;
+    align-self: center;
     margin-top: 1em;
-    padding: 1em;
+    padding: 1em 0.5em;
 }
 
 .cabecalho-nav {
-    width: 100vw;
     margin-left: 0.5em;
 }
 
@@ -17,7 +16,6 @@
 
 .cabecalho-nav__item {
     margin-left: 0.5em;
-    
 }
 
 .cabecalho-nav__link {

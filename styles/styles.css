@@ -23,9 +23,6 @@ body {
     background-color: var(--cor-do-cabecalho);
 }
 
-.container-titulo {
-    width: 80vw;
-}
 
 .pagina-grid {
     display: flex;
@@ -51,5 +48,7 @@ body {
     .pagina-grid {
         display: grid;
         grid-template-columns: 1fr 2fr;
+        align-items: flex-start;
+        justify-items: center;
     }
 }
