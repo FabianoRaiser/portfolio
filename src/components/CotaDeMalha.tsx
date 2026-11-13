@@ -18,6 +18,78 @@ type Anel = {
 
 export type FaseDaCota = "ausente" | "vestindo" | "tirando"
 
+const GOLPE = "/mixkit-sword-blade-lashes-chainmail-armor-2776.wav"
+
+let audio: AudioContext | null = null
+let amostra: AudioBuffer | null = null
+let carga: Promise<void> | null = null
+let fonte: AudioBufferSourceNode | null = null
+let volume: GainNode | null = null
+let silencio: number | null = null
+let querSom = false
+
+export function prepararEspada() {
+  const Contexto = window.AudioContext
+  if (!Contexto) return
+  if (!audio) audio = new Contexto()
+  if (audio.state === "suspended") void audio.resume()
+  if (carga || amostra) return
+  const contexto = audio
+  carga = fetch(GOLPE)
+    .then((resposta) => resposta.arrayBuffer())
+    .then((dados) => contexto.decodeAudioData(dados))
+    .then((buffer) => {
+      amostra = buffer
+      if (querSom) tocarGolpe()
+    })
+    .catch(() => {
+      carga = null
+    })
+}
+
+function tocarGolpe() {
+  querSom = true
+  if (!audio || !amostra) return
+  if (audio.state === "suspended") void audio.resume()
+  if (silencio !== null) {
+    window.clearTimeout(silencio)
+    silencio = null
+  }
+  if (!fonte) {
+    volume = audio.createGain()
+    volume.gain.value = 0.8
+    volume.connect(audio.destination)
+    fonte = audio.createBufferSource()
+    fonte.buffer = amostra
+    fonte.loop = true
+    fonte.connect(volume)
+    fonte.start()
+  }
+  silencio = window.setTimeout(calarEspada, 160)
+}
+
+export function calarEspada() {
+  querSom = false
+  if (silencio !== null) {
+    window.clearTimeout(silencio)
+    silencio = null
+  }
+  if (!audio || !fonte || !volume) {
+    fonte = null
+    volume = null
+    return
+  }
+  const agora = audio.currentTime
+  const ganho = volume
+  const tocando = fonte
+  fonte = null
+  volume = null
+  ganho.gain.cancelScheduledValues(agora)
+  ganho.gain.setValueAtTime(ganho.gain.value, agora)
+  ganho.gain.linearRampToValueAtTime(0.0001, agora + 0.08)
+  tocando.stop(agora + 0.09)
+}
+
 function tecer(largura: number, altura: number) {
   const aneis: Anel[] = []
   const grade = new Map<string, Anel[]>()
@@ -151,6 +223,7 @@ export function CotaDeMalha({ fase, aoTerminar }: { fase: FaseDaCota; aoTerminar
       const alcanceX = Math.ceil(ALCANCE / PASSO_X)
       const alcanceY = Math.ceil(ALCANCE / PASSO_Y)
       const impulso = Math.min(forca, 16) * (reduzido ? 0.1 : 0.26)
+      let atingiu = false
 
       for (let iy = celulaY - alcanceY; iy <= celulaY + alcanceY; iy += 1) {
         for (let ix = celulaX - alcanceX; ix <= celulaX + alcanceX; ix += 1) {
@@ -163,15 +236,18 @@ export function CotaDeMalha({ fase, aoTerminar }: { fase: FaseDaCota; aoTerminar
             anel.vx += dirX * impulso * peso
             anel.vy += dirY * impulso * peso
             anel.solto = true
+            atingiu = true
           }
         }
       }
 
+      if (atingiu) tocarGolpe()
       pedir()
     }
 
     const descer = (evento: PointerEvent) => {
       if (faseAtual.current !== "vestindo") return
+      prepararEspada()
       ultimo = { x: evento.clientX, y: evento.clientY }
       empurrar(evento.clientX, evento.clientY, 0.2, 0.98, 7)
     }
@@ -213,7 +289,11 @@ export function CotaDeMalha({ fase, aoTerminar }: { fase: FaseDaCota; aoTerminar
 
   useEffect(() => {
     document.documentElement.classList.toggle("armada", fase === "vestindo")
-    return () => document.documentElement.classList.remove("armada")
+    if (fase !== "vestindo") calarEspada()
+    return () => {
+      document.documentElement.classList.remove("armada")
+      calarEspada()
+    }
   }, [fase])
 
   return (

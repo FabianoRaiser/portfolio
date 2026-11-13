@@ -1,6 +1,6 @@
 import { useRef, useState, type FormEvent, type MouseEvent } from "react"
 import { createPortal } from "react-dom"
-import { CotaDeMalha, type FaseDaCota } from "./CotaDeMalha"
+import { CotaDeMalha, prepararEspada, type FaseDaCota } from "./CotaDeMalha"
 import { perfil } from "../data/perfil"
 
 const links = [
@@ -88,7 +88,10 @@ export function Terminal() {
       return
     }
 
-    if (vestir) alternarCota()
+    if (vestir) {
+      prepararEspada()
+      alternarCota()
+    }
 
     if (acao.tipo === "help") {
       proximos.push({ id: identificar(), tipo: "texto", texto: ajuda })
