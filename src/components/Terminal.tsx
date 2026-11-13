@@ -1,4 +1,6 @@
 import { useRef, useState, type FormEvent, type MouseEvent } from "react"
+import { createPortal } from "react-dom"
+import { CotaDeMalha, type FaseDaCota } from "./CotaDeMalha"
 import { perfil } from "../data/perfil"
 
 const links = [
@@ -13,7 +15,10 @@ const ajuda = `Comandos:
   links                         Lista os links da página atual
   go <n>                        Abre o link N
   help                          Mostra esta ajuda
-  quit                          Limpa o terminal`
+  quit                          Limpa o terminal
+
+Flags:
+  --chainmail                   Veste ou retira a cota de malha`
 
 type Bloco =
   | { id: number; tipo: "comando"; texto: string }
@@ -22,21 +27,24 @@ type Bloco =
 
 type Acao =
   | { tipo: "pagina" }
+  | { tipo: "eco" }
   | { tipo: "help" }
   | { tipo: "links" }
   | { tipo: "clear" }
   | { tipo: "go"; n: string | undefined }
 
-function interpretar(bruto: string): Acao {
-  const partes = bruto.trim().split(/\s+/).filter((parte) => parte && parte !== "curler")
-  const comando = partes[0] ?? ""
+function interpretar(bruto: string): { acao: Acao; vestir: boolean } {
+  const partes = bruto.trim().split(/\s+/).filter(Boolean)
+  const vestir = partes.includes("--chainmail")
+  const resto = partes.filter((parte) => parte !== "--chainmail" && parte !== "curler")
+  const comando = resto[0] ?? ""
 
-  if (!comando) return { tipo: "pagina" }
-  if (comando === "help" || comando === "--help" || comando === "-h") return { tipo: "help" }
-  if (comando === "links") return { tipo: "links" }
-  if (comando === "quit" || comando === "exit" || comando === "clear") return { tipo: "clear" }
-  if (comando === "go") return { tipo: "go", n: partes[1] }
-  return { tipo: "pagina" }
+  if (!comando) return { acao: vestir ? { tipo: "eco" } : { tipo: "pagina" }, vestir }
+  if (comando === "help" || comando === "--help" || comando === "-h") return { acao: { tipo: "help" }, vestir }
+  if (comando === "links") return { acao: { tipo: "links" }, vestir }
+  if (comando === "quit" || comando === "exit" || comando === "clear") return { acao: { tipo: "clear" }, vestir }
+  if (comando === "go") return { acao: { tipo: "go", n: resto[1] }, vestir }
+  return { acao: { tipo: "pagina" }, vestir }
 }
 
 export function Terminal() {
@@ -45,6 +53,7 @@ export function Terminal() {
   const [blocos, setBlocos] = useState<Bloco[]>([])
   const [comando, setComando] = useState("")
   const [paginaCarregada, setPaginaCarregada] = useState(false)
+  const [cota, setCota] = useState<FaseDaCota>("ausente")
 
   const identificar = () => {
     sequencia.current += 1
@@ -56,18 +65,29 @@ export function Terminal() {
     campo.current?.focus()
   }
 
+  const alternarCota = () => {
+    const reduzido = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    setCota((atual) => {
+      if (atual === "vestindo") return reduzido ? "ausente" : "tirando"
+      return "vestindo"
+    })
+  }
+
   const enviar = (evento: FormEvent) => {
     evento.preventDefault()
     const digitado = comando
-    const acao = interpretar(digitado)
+    const { acao, vestir } = interpretar(digitado)
     const proximos: Bloco[] = [{ id: identificar(), tipo: "comando", texto: digitado }]
 
     if (acao.tipo === "clear") {
       setBlocos([])
       setPaginaCarregada(false)
+      setCota("ausente")
       setComando("")
       return
     }
+
+    if (vestir) alternarCota()
 
     if (acao.tipo === "help") {
       proximos.push({ id: identificar(), tipo: "texto", texto: ajuda })
@@ -104,8 +124,18 @@ export function Terminal() {
     setComando("")
   }
 
+  const aviso =
+    cota === "vestindo"
+      ? "A página está vestida com uma cota de malha."
+      : cota === "tirando"
+        ? "A cota de malha está saindo."
+        : ""
+
   return (
     <div className="terminal" onClick={focar}>
+      <p className="somente-leitor" aria-live="polite">
+        {aviso}
+      </p>
       <div className="terminal__saida" aria-live="polite">
         {blocos.map((bloco) => {
           if (bloco.tipo === "comando") {
@@ -150,6 +180,11 @@ export function Terminal() {
           />
         </label>
       </form>
+      {cota !== "ausente" &&
+        createPortal(
+          <CotaDeMalha fase={cota} aoTerminar={() => setCota("ausente")} />,
+          document.body,
+        )}
     </div>
   )
 }

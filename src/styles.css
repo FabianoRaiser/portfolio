@@ -506,9 +506,61 @@ a:hover {
   outline: none;
 }
 
+.cota {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  color: var(--verde);
+}
+
+.cota--vestindo {
+  animation: veste 1.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.cota--tirando {
+  animation: desveste 0.7s ease-in both;
+}
+
+.cota__anel {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.somente-leitor {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 @keyframes pisca {
   50% {
     opacity: 0;
+  }
+}
+
+@keyframes veste {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0);
+  }
+}
+
+@keyframes desveste {
+  from {
+    clip-path: inset(0);
+  }
+  to {
+    clip-path: inset(0 0 100% 0);
   }
 }
 
@@ -598,7 +650,9 @@ a:hover {
     transition: none;
   }
 
-  .terminal__marca::after {
+  .terminal__marca::after,
+  .cota--vestindo,
+  .cota--tirando {
     animation: none;
   }
 }
