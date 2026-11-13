@@ -506,6 +506,12 @@ a:hover {
   outline: none;
 }
 
+html.armada,
+html.armada * {
+  cursor: url("/espada.png") 2 2, crosshair;
+  touch-action: none;
+}
+
 .cota {
   position: fixed;
   inset: 0;

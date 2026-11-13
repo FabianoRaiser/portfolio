@@ -18,7 +18,8 @@ const ajuda = `Comandos:
   quit                          Limpa o terminal
 
 Flags:
-  --chainmail                   Veste ou retira a cota de malha`
+  --chainmail                   Veste ou retira a cota de malha
+                                O ponteiro vira uma espada`
 
 type Bloco =
   | { id: number; tipo: "comando"; texto: string }
