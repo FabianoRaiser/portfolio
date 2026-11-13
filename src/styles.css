@@ -417,6 +417,99 @@ a:hover {
 
 #contato {
   min-height: calc(100svh - 5.5rem);
+  display: flex;
+  flex-direction: column;
+}
+
+.terminal {
+  margin-top: auto;
+  padding-top: 2.75rem;
+  min-width: 0;
+  max-width: 100%;
+  color: #7f9176;
+  font-family: ui-monospace, "Cascadia Mono", "Segoe UI Mono", monospace;
+  font-size: 0.84rem;
+  line-height: 1.45;
+  cursor: text;
+}
+
+.terminal__saida {
+  display: grid;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.terminal__eco,
+.terminal__texto,
+.terminal__pagina {
+  margin: 0;
+}
+
+.terminal__texto {
+  white-space: pre-wrap;
+  font: inherit;
+}
+
+.terminal__pagina {
+  display: grid;
+  gap: 0.65rem;
+  max-width: 40rem;
+}
+
+.terminal__titulo {
+  color: var(--pastel);
+  font-size: 1rem;
+}
+
+.terminal__rodape {
+  color: #5f6e59;
+}
+
+.terminal__linha {
+  margin-top: 0.35rem;
+}
+
+.terminal__prompt {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  width: 100%;
+}
+
+.terminal__marca {
+  color: var(--verde);
+  flex: none;
+}
+
+.terminal:not(:focus-within):has(.terminal__campo:placeholder-shown) .terminal__marca::after {
+  content: "_";
+  margin-left: 0.35rem;
+  animation: pisca 1.1s steps(1) infinite;
+}
+
+.terminal__campo {
+  flex: 1;
+  min-width: 0;
+  font: inherit;
+  color: var(--texto);
+  background: transparent;
+  border: 0;
+  padding: 0;
+  caret-color: var(--verde);
+}
+
+.terminal__campo::placeholder {
+  color: transparent;
+}
+
+.terminal__campo:focus {
+  outline: none;
+}
+
+@keyframes pisca {
+  50% {
+    opacity: 0;
+  }
 }
 
 .contato__chamada {
@@ -503,6 +596,10 @@ a:hover {
 
   .carrossel__trilho {
     transition: none;
+  }
+
+  .terminal__marca::after {
+    animation: none;
   }
 }
 

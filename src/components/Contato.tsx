@@ -1,4 +1,5 @@
 import { perfil } from "../data/perfil"
+import { Terminal } from "./Terminal"
 
 const canais = [
   { rotulo: "GitHub", href: perfil.github },
@@ -32,6 +33,7 @@ export function Contato() {
           </li>
         ))}
       </ul>
+      <Terminal />
     </section>
   )
 }
